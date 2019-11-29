@@ -32,7 +32,7 @@ class PriorityQueue {
         let addedFlag = false;
         // Since we want to add elements to end, we'll just push them.
         for (let i = 0; i < this.container.length; i++) {
-            if (currElem.priority < this.container[i].priority) {
+            if (currElem.priority >= this.container[i].priority) {
                 this.container.splice(i, 0, currElem);
                 addedFlag = true; break;
             }
@@ -81,47 +81,57 @@ class Node {
             node.addEdge(this, weight);
         }
     }
-
-    getEdgeWeight(node){
-        return this.edges.get(node);
-    }
 }
+
+Node.prototype.toString = function(){
+    return this.label;
+};
 
 function dijkstra(graph, source, target) {
     let distances = new Map();
     let prev = new Map();
     let pq = new PriorityQueue(graph.length*graph.length);
 
-    distances[source] = 0;
-    //pq.enqueue(source, 0);
     graph.forEach(node => {
       if (node !== source) {
           distances.set(node,Infinity);
+      }else{
+          distances.set(node,0);
       }
-      pq.enqueue(node);
+      pq.enqueue(node, distances.get(node));
       prev.set(node,null);
-   });
+    });
 
-   while (!pq.isEmpty()) {
+    while (!pq.isEmpty()) {
         let currNode = pq.dequeue().data;
+        if(currNode === target){
+            break;
+        }
         currNode.edges.forEach((weight,neighbor) => {
-            let alt = distances[currNode] + weight;
-            if(distances[currNode] == Infinity){
+            let alt = distances.get(currNode) + weight;
+            if(distances.get(currNode) === Infinity){
                 alt = weight;
             }
-            if (alt < distances[neighbor]) {
+            if (alt < distances.get(neighbor)) {
                 distances.set(neighbor,alt);
                 prev.set(neighbor,currNode);
-                pq.enqueue(neighbor, distances[neighbor]);
+                pq.enqueue(neighbor, distances.get(neighbor));
             }
         });
-   }
-   console.log(distances);
-   console.log(prev);
-   return [distances,prev];
+    }
+    let reversePath = [];
+    let tmpNode = target;
+    if(prev.get(tmpNode) !== null || tmpNode === source){
+        while(tmpNode !== null){
+            reversePath.push(tmpNode);
+            tmpNode = prev.get(tmpNode);
+        }
+    }
+
+    return reversePath.reverse();
 }
 
-var g = new Array();
+var g = [];
 var nodeA = new Node("A");
 g.push(nodeA);
 var nodeB = new Node("B");
@@ -146,7 +156,7 @@ nodeE.addEdge(nodeF, 10);
 nodeB.addEdge(nodeG, 9);
 nodeE.addEdge(nodeG, 50);
 
-console.log(dijkstra(g, nodeA, nodeA));
+console.log(dijkstra(g, nodeA, nodeF));
 
 </script>
 </head>
