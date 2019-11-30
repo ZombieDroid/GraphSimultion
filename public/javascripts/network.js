@@ -28,6 +28,10 @@ var nodes = new vis.DataSet([
 
 ]);
 
+function isSwitch(id){
+    return id > 9;
+}
+
 // create an array with edges
 var edges = new vis.DataSet([
     {id: 1, from: 0, to: 8, label: '5'},
@@ -73,7 +77,6 @@ demandMatrix = [
     [null, null, 12, null, null, null, null, '-', null, 5],
     [null, null, null, null, null, null, null, null, '-', null],
     [null, null, null, null, null, null, null, null, null, '-']];
-var g = [];
 var actualDemand = 0;
 var started = false;
 var container = document.getElementById('mynetwork');
@@ -86,27 +89,53 @@ var data = {
 var options = {};
 var network = new vis.Network(container, data, options);
 
-function changeSelectedEdgeColor(selected) {
-    setUpGraph();
 
+function changeSelectedEdgeColor(selected) {
     var edge = edges.get(selected);
     edge.color = "#aa0000";
     edge.width = '3';
     edges.update(edge);
 }
 
-function setUpGraph(){
+var staticEdges = [1,2,3,4,5,6,7,8,9,10,11];
+var dynamicEdges = [12,13,14,15,16,17,18,19,20,21,22,23,24,25];
+var usedDynamicEdges = [];
 
-    actualDemand = 0;
-    for (var i = 0; i< nodes.length;++i){
-        var node = new Node(nodes.get(i).label);
+function setUpGraph(){
+    let g = [];
+
+    for (var i = 0; i < nodes.length; ++i){
+        var node = new Node(i);
         g.push(node);
-    };
+    }
+
+    staticEdges.forEach((edgeId)=>{
+       let fromNode = g.find(value => {return value.label === edges.get(edgeId).from});
+       let toNode = g.find(value => {return value.label === edges.get(edgeId).to});
+
+       fromNode.addNewEdge(toNode, edges.get(edgeId).label, edgeId)
+    });
+
+    dynamicEdges.forEach((edgeId)=>{
+        let fromNode = g.find(value => {return value.label === edges.get(edgeId).from});
+        let toNode = g.find(value => {return value.label === edges.get(edgeId).to});
+
+        fromNode.addNewEdge(toNode, edges.get(edgeId).label, edgeId)
+    });
+
+    usedDynamicEdges.forEach((edgeId)=>{
+        let fromNode = g.find(value => {return value.label === edges.get(edgeId).from});
+        let toNode = g.find(value => {return value.label === edges.get(edgeId).to});
+
+        fromNode.addNewEdge(toNode, edges.get(edgeId).label, edgeId)
+    });
+
+    return g;
 }
 
 function next(){
     if(!started){
-        setUpGraph();
+        actualDemand = 0;
         started = true;
         var button = document.getElementById("coreButton");
         button.value = 'Next';
@@ -119,11 +148,29 @@ function next(){
 
 
 function runDemandFirst (demand) {
-    let fromNode;
-    let targetNode;
+    let graph = setUpGraph();
 
-    //dijkstra();
+    let fromNode = graph.find(value => value.label === demand.from);
+    let targetNode = graph.find(value => value.label === demand.to);
+
+    let path = dijkstra(graph, fromNode, targetNode);
+    updateEdges(path);
     refreshGraphColor();
+}
+
+function updateEdges(path){
+    // first and last nodes should not be switches!
+    for(var i = 0; i<path.length; i++){
+        if(isSwitch(path[i].label)){
+            let fromEdge = path[i].getEdge(path[i-1]);
+            let toEdge = path[i].getEdge(path[i+1]);
+            usedDynamicEdges.push(fromEdge.id);
+            usedDynamicEdges.push(toEdge.id);
+            path[i].edges.forEach((edge)=>{
+               dynamicEdges.splice(edge.id, 1);
+            });
+        }
+    }
 }
 
 function refreshGraphColor() {
