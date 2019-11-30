@@ -75,7 +75,7 @@ demandMatrix = [
     [null, null, null, null, null, null, null, null, null, '-']];
 var g = [];
 var actualDemand = 0;
-
+var started = false;
 var container = document.getElementById('mynetwork');
 var data = {
     nodes: nodes,
@@ -105,8 +105,15 @@ function setUpGraph(){
 }
 
 function next(){
+    if(!started){
+        setUpGraph();
+        started = true;
+        var button = document.getElementById("coreButton");
+        button.value = 'Next';
+    }
+
     let demand = demands[actualDemand];
-    //runDemandFirst(demand);
+    runDemandFirst(demand);
     ++actualDemand;
 }
 
