@@ -74,6 +74,7 @@ demandMatrix = [
     [null, null, null, null, null, null, null, null, '-', null],
     [null, null, null, null, null, null, null, null, null, '-']];
 var g = [];
+var actualDemand = 0;
 
 var container = document.getElementById('mynetwork');
 var data = {
@@ -96,83 +97,30 @@ function changeSelectedEdgeColor(selected) {
 
 function setUpGraph(){
 
+    actualDemand = 0;
     for (var i = 0; i< nodes.length;++i){
         var node = new Node(nodes.get(i).label);
         g.push(node);
     };
 }
 
-function showAndCollectDemands() {
-    var table = document.createElement('table');
-    var tableBody = document.createElement('tbody');
-    var roww = document.createElement('tr');
-
-    let row = 0;
-    demandMatrix.forEach(function (rowData) {
-        let col = 0;
-        rowData.forEach(function (cellData) {
-            if (null !== cellData && '-' !== cellData)
-                demands.push(new Demand(row, col, cellData));
-            ++col;
-        });
-        ++row;
-    });
-
-    demands.sort(function (a, b) {
-        return b.demandValue - a.demandValue;
-    });
-
-    for (var i = 0; i < demands.length; ++i) {
-        var cell = document.createElement('td');
-        cell.style = 'border: 1px solid; width: 80px;';
-        cell.appendChild(document.createTextNode(demands[i].demandValue + ': ' + demands[i].from + ' -> ' + demands[i].to));
-        roww.appendChild(cell);
-    };
-
-    tableBody.appendChild(roww);
-    table.appendChild(tableBody);
-    document.body.appendChild(table);
+function next(){
+    let demand = demands[actualDemand];
+    //runDemandFirst(demand);
+    ++actualDemand;
 }
 
 
+function runDemandFirst (demand) {
+    let fromNode;
+    let targetNode;
 
-function createTable() {
-    var table = document.createElement('table');
-    table.style = 'border: 1px solid';
-    table.className = 'column';
-    let clearDiv = document.createElement('div');
-    clearDiv.className = 'clear';
-    var tableBody = document.createElement('tbody');
-    var thead = document.createElement('tr');
-    var cell = document.createElement('td');
-    thead.appendChild(cell);
-    for (var i = 0; i < 10; ++i) {
-        var cell = document.createElement('td');
-        cell.style = 'border: 1px solid; width: 30px;';
-        cell.appendChild(document.createTextNode(i));
-        thead.appendChild(cell);
-    };
+    //dijkstra();
+    refreshGraphColor();
+}
 
-    tableBody.appendChild(thead);
-    let counter = 0;
-    demandMatrix.forEach(function (rowData) {
-        var row = document.createElement('tr');
-        var cell1 = document.createElement('td');
-        cell1.style = 'border: 1px solid; width: 30px;';
-        cell1.appendChild(document.createTextNode(counter++));
-        row.appendChild(cell1);
-        rowData.forEach(function (cellData) {
-            var cell = document.createElement('td');
-            cell.style = 'border: 1px solid; width: 30px;';
-            cell.appendChild(document.createTextNode((null === cellData) ? '' : cellData));
-            row.appendChild(cell);
-        });
-        tableBody.appendChild(row);
-    });
+function refreshGraphColor() {
 
-    table.appendChild(tableBody);
-    document.getElementById('parent').appendChild(table);
-    document.getElementById('parent').appendChild(clearDiv);
 }
 
 function dijkstra(graph, source, target) {
@@ -221,7 +169,76 @@ function dijkstra(graph, source, target) {
 
 
 
+function showAndCollectDemands() {
+    var table = document.createElement('table');
+    var tableBody = document.createElement('tbody');
+    var roww = document.createElement('tr');
 
+    let row = 0;
+    demandMatrix.forEach(function (rowData) {
+        let col = 0;
+        rowData.forEach(function (cellData) {
+            if (null !== cellData && '-' !== cellData)
+                demands.push(new Demand(row, col, cellData));
+            ++col;
+        });
+        ++row;
+    });
+
+    demands.sort(function (a, b) {
+        return b.demandValue - a.demandValue;
+    });
+
+    for (var i = 0; i < demands.length; ++i) {
+        var cell = document.createElement('td');
+        cell.style = 'border: 1px solid; width: 80px;';
+        cell.appendChild(document.createTextNode(demands[i].demandValue + ': ' + demands[i].from + ' -> ' + demands[i].to));
+        roww.appendChild(cell);
+    };
+
+    tableBody.appendChild(roww);
+    table.appendChild(tableBody);
+    document.body.appendChild(table);
+}
+
+function createTable() {
+    var table = document.createElement('table');
+    table.style = 'border: 1px solid';
+    table.className = 'column';
+    let clearDiv = document.createElement('div');
+    clearDiv.className = 'clear';
+    var tableBody = document.createElement('tbody');
+    var thead = document.createElement('tr');
+    var cell = document.createElement('td');
+    thead.appendChild(cell);
+    for (var i = 0; i < 10; ++i) {
+        var cell = document.createElement('td');
+        cell.style = 'border: 1px solid; width: 30px;';
+        cell.appendChild(document.createTextNode(i));
+        thead.appendChild(cell);
+    };
+
+    tableBody.appendChild(thead);
+    let counter = 0;
+    demandMatrix.forEach(function (rowData) {
+        var row = document.createElement('tr');
+        var cell1 = document.createElement('td');
+        cell1.style = 'border: 1px solid; width: 30px;';
+        cell1.appendChild(document.createTextNode(counter++));
+        row.appendChild(cell1);
+        rowData.forEach(function (cellData) {
+            var cell = document.createElement('td');
+            cell.style = 'border: 1px solid; width: 30px;';
+            cell.appendChild(document.createTextNode((null === cellData) ? '' : cellData));
+            row.appendChild(cell);
+        });
+        tableBody.appendChild(row);
+    });
+
+    table.appendChild(tableBody);
+    document.getElementById('parent').appendChild(table);
+    document.getElementById('parent').appendChild(clearDiv);
+}
 
 
 /*
