@@ -71,11 +71,25 @@ class Node {
         this.edges = new Map();
     }
 
-    addEdge(node, weight){
-        if(!this.edges.has(node)){
-            this.edges.set(node,weight);
-            node.addEdge(this, weight);
-        }
+    addNewEdge(node, weight, id){
+        let edge = new Edge(id, weight);
+        this.edges.set(node,edge);
+        node.addExistingEdge(this, edge);
+    }
+
+    addExistingEdge(node, edge){
+        this.edges.set(node, edge);
+    }
+
+    getEdge(node){
+        return this.edges.get(node);
+    }
+}
+
+class Edge {
+    constructor(id, weight) {
+        this.id = id;
+        this.weight = weight;
     }
 }
 

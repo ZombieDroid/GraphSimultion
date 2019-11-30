@@ -143,10 +143,10 @@ function dijkstra(graph, source, target) {
         if(currNode === target){
             break;
         }
-        currNode.edges.forEach((weight,neighbor) => {
-            let alt = distances.get(currNode) + weight;
+        currNode.edges.forEach((edge,neighbor) => {
+            let alt = distances.get(currNode) + edge.weight;
             if(distances.get(currNode) === Infinity){
-                alt = weight;
+                alt = edge.weight;
             }
             if (alt < distances.get(neighbor)) {
                 distances.set(neighbor,alt);
@@ -257,17 +257,17 @@ g.push(nodeF);
 var nodeG = new Node("G");
 g.push(nodeG);
 
+nodeA.addNewEdge(nodeC, 100, 0);
+nodeA.addNewEdge(nodeB, 3, 1);
+nodeA.addNewEdge(nodeD, 4, 2);
+nodeD.addNewEdge(nodeC, 3, 3);
+nodeD.addNewEdge(nodeE, 8, 4);
+nodeE.addNewEdge(nodeF, 10, 5);
+nodeB.addNewEdge(nodeG, 9, 6);
+nodeE.addNewEdge(nodeG, 50, 7);
 
 
-
-nodeA.addEdge(nodeC, 100);
-nodeA.addEdge(nodeB, 3);
-nodeA.addEdge(nodeD, 4);
-nodeD.addEdge(nodeC, 3);
-nodeD.addEdge(nodeE, 8);
-nodeE.addEdge(nodeF, 10);
-nodeB.addEdge(nodeG, 9);
-nodeE.addEdge(nodeG, 50);
-*/
-
-//console.log(dijkstra(g, nodeA, nodeF));
+var nodes = dijkstra(g, nodeA, nodeF);
+for(var i = 0; i<nodes.length-1; i++){
+    console.log(nodes[i].label + "-" + nodes[i].getEdge(nodes[i+1]).id + "->" + nodes[i+1].label);
+}*/
