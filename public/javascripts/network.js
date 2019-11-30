@@ -133,17 +133,24 @@ function setUpGraph(){
     return g;
 }
 
+function isDone(){
+    return dynamicEdges.length === 0 || demands.length === 0;
+}
+
 function next(){
+    if(isDone()){
+        return;
+    }
     if(!started){
         actualDemand = 0;
         started = true;
         var button = document.getElementById("coreButton");
         button.value = 'Next';
+    } else {
+        let demand = demands[actualDemand];
+        runDemandFirst(demand);
+        ++actualDemand;
     }
-
-    let demand = demands[actualDemand];
-    runDemandFirst(demand);
-    ++actualDemand;
 }
 
 
