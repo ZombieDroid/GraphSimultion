@@ -60,7 +60,7 @@ var edges = new vis.DataSet([
     {id: 20, from: 12, to: 1, dashes: true, label: 1, color: '#32cd32'},
     {id: 21, from: 12, to: 6, dashes: true, label: 1, color: '#32cd32'},
     {id: 22, from: 12, to: 8, dashes: true, label: 1, color: '#32cd32'},
-    //3
+    //4
     {id: 23, from: 13, to: 4, dashes: true, label: 1, color: '#32cd32'},
     {id: 24, from: 13, to: 5, dashes: true, label: 1, color: '#32cd32'},
     {id: 25, from: 13, to: 9, dashes: true, label: 1, color: '#32cd32'},
@@ -96,6 +96,7 @@ var network = new vis.Network(container, data, options);
 var staticEdges = [1,2,3,4,5,6,7,8,9,10,11];
 var dynamicEdges = [12,13,14,15,16,17,18,19,20,21,22,23,24,25];
 var usedDynamicEdges = [];
+var unusedDynamicEdges = [];
 
 function setUpGraph(){
     let g = [];
@@ -189,6 +190,7 @@ function runDemandFirst (demand) {
 
 function updateEdges(path){
     // first and last nodes should not be switches!
+    console.assert(!isSwitch(path[0].label) && !isSwitch(path[path.length-1].label));
     for(var i = 0; i<path.length; i++){
         if(isSwitch(path[i].label)){
             let fromEdge = path[i].getEdge(path[i-1]);
@@ -196,6 +198,9 @@ function updateEdges(path){
             usedDynamicEdges.push(fromEdge.id);
             usedDynamicEdges.push(toEdge.id);
             path[i].edges.forEach((edge)=>{
+                if(edge.id !== fromEdge.id && edge.id !== toEdge.id){
+                    unusedDynamicEdges.push(edge.id);
+                }
                dynamicEdges.splice(dynamicEdges.indexOf(edge.id), 1);
             });
         }
