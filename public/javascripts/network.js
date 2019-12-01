@@ -10,16 +10,16 @@ var demands = [];
 
 // create an array with nodes
 var nodes = new vis.DataSet([
-    {id: 0, label: 'v0'},
-    {id: 1, label: 'v1'},
-    {id: 2, label: 'v2'},
-    {id: 3, label: 'v3'},
-    {id: 4, label: 'v4'},
-    {id: 5, label: 'v5'},
-    {id: 6, label: 'v6'},
-    {id: 7, label: 'v7'},
-    {id: 8, label: 'v8'},
-    {id: 9, label: 'v9'},
+    {id: 0, label: 'v0', color:'#4F7BCD'},
+    {id: 1, label: 'v1', color:'#4F7BCD'},
+    {id: 2, label: 'v2', color:'#4F7BCD'},
+    {id: 3, label: 'v3', color:'#4F7BCD'},
+    {id: 4, label: 'v4', color:'#4F7BCD'},
+    {id: 5, label: 'v5', color:'#4F7BCD'},
+    {id: 6, label: 'v6', color:'#4F7BCD'},
+    {id: 7, label: 'v7', color:'#4F7BCD'},
+    {id: 8, label: 'v8', color:'#4F7BCD'},
+    {id: 9, label: 'v9', color:'#4F7BCD'},
     //switches
     {id: 10, label: 's1', shape: "box", color: '#32cd32'},
     {id: 11, label: 's2', shape: "box", color: '#32cd32'},
@@ -34,37 +34,39 @@ function isSwitch(id){
 
 // create an array with edges
 var edges = new vis.DataSet([
-    {id: 1, from: 0, to: 8, label: '5'},
-    {id: 2, from: 0, to: 1, label: '5'},
-    {id: 3, from: 1, to: 2, label: '2'},
-    {id: 4, from: 1, to: 5, label: '8'},
-    {id: 5, from: 1, to: 6, label: '6'},
-    {id: 6, from: 2, to: 4, label: '4'},
-    {id: 7, from: 3, to: 6, label: '3'},
-    {id: 8, from: 3, to: 4, label: '7'},
-    {id: 9, from: 7, to: 8, label: '3'},
-    {id: 10, from: 6, to: 9, label: '9'},
-    {id: 11, from: 7, to: 9, label: '-'},
+    {id: 1, from: 0, to: 8, label: '5', color:'#4F7BCD'},
+    {id: 2, from: 0, to: 1, label: '5', color:'#4F7BCD'},
+    {id: 3, from: 1, to: 2, label: '2', color:'#4F7BCD'},
+    {id: 4, from: 1, to: 5, label: '8', color:'#4F7BCD'},
+    {id: 5, from: 1, to: 6, label: '6', color:'#4F7BCD'},
+    {id: 6, from: 2, to: 4, label: '4', color:'#4F7BCD'},
+    {id: 7, from: 3, to: 6, label: '3', color:'#4F7BCD'},
+    {id: 8, from: 3, to: 4, label: '7', color:'#4F7BCD'},
+    {id: 9, from: 7, to: 8, label: '3', color:'#4F7BCD'},
+    {id: 10, from: 6, to: 9, label: '9', color:'#4F7BCD'},
+    {id: 11, from: 7, to: 9, label: '2', color:'#4F7BCD'},
     //dynamic links
     //1
-    {id: 12, from: 10, to: 0, dashes: true, label: 1},
-    {id: 13, from: 10, to: 7, dashes: true, label: 1},
-    {id: 14, from: 10, to: 4, dashes: true, label: 1},
-    {id: 15, from: 10, to: 2, dashes: true, label: 1},
+    {id: 12, from: 10, to: 0, dashes: true, label: 1, color: '#32cd32'},
+    {id: 13, from: 10, to: 7, dashes: true, label: 1, color: '#32cd32'},
+    {id: 14, from: 10, to: 4, dashes: true, label: 1, color: '#32cd32'},
+    {id: 15, from: 10, to: 2, dashes: true, label: 1, color: '#32cd32'},
     //2
-    {id: 16, from: 11, to: 0, dashes: true, label: 1},
-    {id: 17, from: 11, to: 3, dashes: true, label: 1},
-    {id: 18, from: 11, to: 6, dashes: true, label: 1},
-    {id: 19, from: 11, to: 7, dashes: true, label: 1},
+    {id: 16, from: 11, to: 0, dashes: true, label: 1, color: '#32cd32'},
+    {id: 17, from: 11, to: 3, dashes: true, label: 1, color: '#32cd32'},
+    {id: 18, from: 11, to: 6, dashes: true, label: 1, color: '#32cd32'},
+    {id: 19, from: 11, to: 7, dashes: true, label: 1, color: '#32cd32'},
     //3
-    {id: 20, from: 12, to: 1, dashes: true, label: 1},
-    {id: 21, from: 12, to: 6, dashes: true, label: 1},
-    {id: 22, from: 12, to: 8, dashes: true, label: 1},
+    {id: 20, from: 12, to: 1, dashes: true, label: 1, color: '#32cd32'},
+    {id: 21, from: 12, to: 6, dashes: true, label: 1, color: '#32cd32'},
+    {id: 22, from: 12, to: 8, dashes: true, label: 1, color: '#32cd32'},
     //3
-    {id: 23, from: 13, to: 4, dashes: true, label: 1},
-    {id: 24, from: 13, to: 5, dashes: true, label: 1},
-    {id: 25, from: 13, to: 9, dashes: true, label: 1},
+    {id: 23, from: 13, to: 4, dashes: true, label: 1, color: '#32cd32'},
+    {id: 24, from: 13, to: 5, dashes: true, label: 1, color: '#32cd32'},
+    {id: 25, from: 13, to: 9, dashes: true, label: 1, color: '#32cd32'},
 ]);
+
+var dynamicEdges = [];
 
 demandMatrix = [
     ['-', null, 20, null, null, null, null, null, null, 9],
@@ -90,12 +92,6 @@ var options = {};
 var network = new vis.Network(container, data, options);
 
 
-function changeSelectedEdgeColor(selected) {
-    var edge = edges.get(selected);
-    edge.color = "#aa0000";
-    edge.width = '3';
-    edges.update(edge);
-}
 
 var staticEdges = [1,2,3,4,5,6,7,8,9,10,11];
 var dynamicEdges = [12,13,14,15,16,17,18,19,20,21,22,23,24,25];
@@ -137,12 +133,21 @@ function isDone(){
     return dynamicEdges.length === 0 || demands.length === 0;
 }
 
+function collectDynamicEdges(){
+    for(let i= 1; i<= edges.length; ++i){
+        if(edges.get(i).dashes){
+           dynamicEdges.push(edges.get(i));
+        }
+    }
+}
+
 function next(){
     if(isDone()){
         return;
     }
     if(!started){
         actualDemand = 0;
+        //collectDynamicEdges();
         started = true;
         var button = document.getElementById("coreButton");
         button.value = 'Next';
@@ -154,15 +159,24 @@ function next(){
 }
 
 
+
 function runDemandFirst (demand) {
     let graph = setUpGraph();
 
+    //dijkstra();
+    let walkedEdges = [];
     let fromNode = graph.find(value => value.label === demand.from);
     let targetNode = graph.find(value => value.label === demand.to);
 
     let path = dijkstra(graph, fromNode, targetNode);
     updateEdges(path);
-    refreshGraphColor();
+    for(var i = 1; i<path.length-1; i++){
+            let fromEdge = path[i].getEdge(path[i-1]);
+            let toEdge = path[i].getEdge(path[i+1]);
+            walkedEdges.push(fromEdge.id);
+            walkedEdges.push(toEdge.id);
+    }
+    colorGraphForDijkstra(walkedEdges);
 }
 
 function updateEdges(path){
@@ -180,8 +194,37 @@ function updateEdges(path){
     }
 }
 
-function refreshGraphColor() {
+function colorGraphForDijkstra(walkedEdges) {
 
+    let time = 0;
+    for(let i= 1;i<=walkedEdges.length; ++i) {
+        setTimeout(function () {
+            let edge = edges.get(walkedEdges[i]);
+            edge.color = "#aa0000";
+            edge.width = '3';
+            let node = nodes.get(edge.to);
+            node.color = '#ECF50C';
+            nodes.update(node);
+            edges.update(edge);
+            if (i == walkedEdges.length) {
+                setTimeout(refreshGraphColor(walkedEdges),1500 + (3+time * 500));
+            }
+        }, 1500 + (++time * 500));
+    };
+}
+
+function refreshGraphColor(walkedEdges) {
+
+    walkedEdges.forEach(function (data) {
+        let edge = edges.get(data);
+            if(edge.dashes){
+                edge.color = "#aa0f2f";
+            } else {
+                edge.color= '#4F7BCD';
+            }
+            edge.width = '1';
+            edges.update(edge);
+    });
 }
 
 function dijkstra(graph, source, target) {
@@ -231,6 +274,9 @@ function dijkstra(graph, source, target) {
 
 
 function showAndCollectDemands() {
+    var createTableButton = document.getElementById('collect-demand');
+    createTableButton.disabled=true;
+
     var table = document.createElement('table');
     var tableBody = document.createElement('tbody');
     var roww = document.createElement('tr');
@@ -263,6 +309,8 @@ function showAndCollectDemands() {
 }
 
 function createTable() {
+    var createTableButton = document.getElementById('table-demand');
+    createTableButton.disabled=true;
     var table = document.createElement('table');
     table.style = 'border: 1px solid';
     table.className = 'column';
@@ -332,3 +380,4 @@ var nodes = dijkstra(g, nodeA, nodeF);
 for(var i = 0; i<nodes.length-1; i++){
     console.log(nodes[i].label + "-" + nodes[i].getEdge(nodes[i+1]).id + "->" + nodes[i+1].label);
 }*/
+
