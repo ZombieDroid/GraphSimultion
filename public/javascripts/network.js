@@ -130,7 +130,7 @@ function setUpGraph(){
 }
 
 function isDone(){
-    return dynamicEdges.length === 0 || demands.length === 0;
+    return dynamicEdges.length === 0 || demands.length === 0 || demands.length === actualDemand;
 }
 
 function collectDynamicEdges(){
@@ -143,6 +143,7 @@ function collectDynamicEdges(){
 
 function next(){
     if(isDone()){
+        alert('Finished');
         return;
     }
     if(!started){
