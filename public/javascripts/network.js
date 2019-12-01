@@ -176,6 +176,11 @@ function runDemandFirst (demand) {
             walkedEdges.push(fromEdge.id);
             walkedEdges.push(toEdge.id);
     }
+    if(2 === path.length){
+        let fromEdge = path[1].getEdge(path[0]);
+        walkedEdges.push(fromEdge.id);
+    }
+    walkedEdges.sort();
     colorGraphForDijkstra(walkedEdges);
 }
 
@@ -197,7 +202,7 @@ function updateEdges(path){
 function colorGraphForDijkstra(walkedEdges) {
 
     let time = 0;
-    for(let i= 1;i<=walkedEdges.length; ++i) {
+    for(let i= 0;i<=walkedEdges.length; ++i) {
         setTimeout(function () {
             let edge = edges.get(walkedEdges[i]);
             edge.color = "#aa0000";
@@ -222,6 +227,9 @@ function refreshGraphColor(walkedEdges) {
             } else {
                 edge.color= '#4F7BCD';
             }
+            let node = nodes.get(edge.to);
+            node.color = '#4F7BCD';
+            nodes.update(node);
             edge.width = '1';
             edges.update(edge);
     });
