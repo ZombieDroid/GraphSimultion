@@ -6,8 +6,9 @@ class Demand {
     }
 }
 
-var demands = [];
-var selectedDemand;
+let demands = [];
+let selectedDemand;
+let walkedEdges = [];
 // create an array with nodes
 var nodes = new vis.DataSet([
     {id: 0, label: 'v0', color:'#4F7BCD'},
@@ -34,48 +35,46 @@ function isSwitch(id){
 
 // create an array with edges
 var edges = new vis.DataSet([
-    {id: 1, from: 0, to: 8, label: '5', color:'#4F7BCD'},
-    {id: 2, from: 0, to: 1, label: '5', color:'#4F7BCD'},
-    {id: 3, from: 1, to: 2, label: '2', color:'#4F7BCD'},
-    {id: 4, from: 1, to: 5, label: '8', color:'#4F7BCD'},
-    {id: 5, from: 1, to: 6, label: '6', color:'#4F7BCD'},
-    {id: 6, from: 2, to: 4, label: '4', color:'#4F7BCD'},
-    {id: 7, from: 3, to: 6, label: '3', color:'#4F7BCD'},
-    {id: 8, from: 3, to: 4, label: '7', color:'#4F7BCD'},
-    {id: 9, from: 7, to: 8, label: '3', color:'#4F7BCD'},
-    {id: 10, from: 6, to: 9, label: '9', color:'#4F7BCD'},
-    {id: 11, from: 7, to: 9, label: '2', color:'#4F7BCD'},
+    {id: 1, from: 0, to: 8, label: '5', color:'#4F7BCD', width: 2},
+    {id: 2, from: 0, to: 1, label: '5', color:'#4F7BCD', width: 2},
+    {id: 3, from: 1, to: 2, label: '2', color:'#4F7BCD', width: 2},
+    {id: 4, from: 1, to: 5, label: '8', color:'#4F7BCD', width: 2},
+    {id: 5, from: 1, to: 6, label: '6', color:'#4F7BCD', width: 2},
+    {id: 6, from: 2, to: 4, label: '4', color:'#4F7BCD', width: 2},
+    {id: 7, from: 3, to: 6, label: '3', color:'#4F7BCD', width: 2},
+    {id: 8, from: 3, to: 4, label: '7', color:'#4F7BCD', width: 2},
+    {id: 9, from: 7, to: 8, label: '3', color:'#4F7BCD', width: 2},
+    {id: 10, from: 6, to: 9, label: '9', color:'#4F7BCD', width: 2},
+    {id: 11, from: 7, to: 9, label: '2', color:'#4F7BCD', width: 2},
     //dynamic links
     //1
-    {id: 12, from: 10, to: 0, dashes: true, label: 1, color: '#32cd32'},
-    {id: 13, from: 10, to: 7, dashes: true, label: 1, color: '#32cd32'},
-    {id: 14, from: 10, to: 4, dashes: true, label: 1, color: '#32cd32'},
-    {id: 15, from: 10, to: 2, dashes: true, label: 1, color: '#32cd32'},
+    {id: 12, from: 10, to: 0, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 13, from: 10, to: 7, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 14, from: 10, to: 4, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 15, from: 10, to: 2, dashes: true, label: 1, color: '#32cd32', width: 2},
     //2
-    {id: 16, from: 11, to: 0, dashes: true, label: 1, color: '#32cd32'},
-    {id: 17, from: 11, to: 3, dashes: true, label: 1, color: '#32cd32'},
-    {id: 18, from: 11, to: 6, dashes: true, label: 1, color: '#32cd32'},
-    {id: 19, from: 11, to: 7, dashes: true, label: 1, color: '#32cd32'},
+    {id: 16, from: 11, to: 0, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 17, from: 11, to: 3, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 18, from: 11, to: 6, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 19, from: 11, to: 7, dashes: true, label: 1, color: '#32cd32', width: 2},
     //3
-    {id: 20, from: 12, to: 1, dashes: true, label: 1, color: '#32cd32'},
-    {id: 21, from: 12, to: 6, dashes: true, label: 1, color: '#32cd32'},
-    {id: 22, from: 12, to: 8, dashes: true, label: 1, color: '#32cd32'},
+    {id: 20, from: 12, to: 1, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 21, from: 12, to: 6, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 22, from: 12, to: 8, dashes: true, label: 1, color: '#32cd32', width: 2},
     //4
-    {id: 23, from: 13, to: 4, dashes: true, label: 1, color: '#32cd32'},
-    {id: 24, from: 13, to: 5, dashes: true, label: 1, color: '#32cd32'},
-    {id: 25, from: 13, to: 9, dashes: true, label: 1, color: '#32cd32'},
+    {id: 23, from: 13, to: 4, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 24, from: 13, to: 5, dashes: true, label: 1, color: '#32cd32', width: 2},
+    {id: 25, from: 13, to: 9, dashes: true, label: 1, color: '#32cd32', width: 2},
 ]);
-
-var dynamicEdges = [];
 
 demandMatrix = [
     ['-', null, 20, null, null, null, null, null, null, 9],
     [null, '-', null, null, null, null, null, null, null, null],
     [null, null, '-', null, null, null, null, null, null, null],
-    [null, null, null, '-', null, null, null, null, null, null],
+    [null, null, null, '-', null, null, 10, null, null, null],
     [null, null, null, null, '-', null, null, null, null, null],
     [null, null, null, null, null, '-', null, null, null, null],
-    [null, null, null, null, null, 10, '-', null, null, null],
+    [null, null, null, null, null, 11, '-', null, null, null],
     [null, null, 12, null, null, null, null, '-', null, 5],
     [null, null, null, null, null, null, null, null, '-', null],
     [null, null, null, null, null, null, null, null, null, '-']];
@@ -143,20 +142,27 @@ function collectDynamicEdges(){
 }
 
 function next(){
+    if(walkedEdges.length > 0)
+        refreshGraphColor(walkedEdges);
+
     if(isDone()){
         alert('Finished');
         return;
     }
+
     if(!started){
         actualDemand = 0;
-        //collectDynamicEdges();
         started = true;
         var button = document.getElementById("coreButton");
         button.value = 'Next';
     } else {
-        let demand = demands[actualDemand];
-        runDemandFirst(demand);
-        ++actualDemand;
+        if(walkedEdges.length === 0){
+            let demand = demands[actualDemand];
+            runDemandFirst(demand);
+            ++actualDemand;
+        } else {
+            walkedEdges = [];
+        }
     }
 }
 
@@ -165,7 +171,7 @@ function next(){
 function runDemandFirst (demand) {
     let graph = setUpGraph();
 
-    let walkedEdges = [];
+    walkedEdges = [];
     let fromNode = graph.find(value => value.label === demand.from);
     let targetNode = graph.find(value => value.label === demand.to);
 
@@ -222,9 +228,6 @@ function colorGraphForDijkstra(walkedEdges) {
             node.color = '#ECF50C';
             nodes.update(node);
             edges.update(edge);
-            if (i == walkedEdges.length) {
-                setTimeout(refreshGraphColor(walkedEdges),1500 + (3+time * 500));
-            }
         }, 1500 + (++time * 500));
     };
 }
@@ -241,9 +244,18 @@ function refreshGraphColor(walkedEdges) {
             let node = nodes.get(edge.to);
             node.color = '#4F7BCD';
             nodes.update(node);
-            edge.width = '1';
+            edge.width = '2';
             edges.update(edge);
     });
+
+    unusedDynamicEdges.forEach(data => {
+        let edge = edges.get(data);
+        if(edge.dashes){
+            edge.color = "rgba(61,61,66,0.74)";
+        }
+        edge.width = '2';
+        edges.update(edge);
+    })
     selectedDemand.style = 'border: 1px solid; width: 80px;background:indianred';
 
 }
