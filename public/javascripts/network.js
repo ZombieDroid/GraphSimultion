@@ -195,10 +195,13 @@ function updateEdges(path){
         if(isSwitch(path[i].label)){
             let fromEdge = path[i].getEdge(path[i-1]);
             let toEdge = path[i].getEdge(path[i+1]);
-            usedDynamicEdges.push(fromEdge.id);
-            usedDynamicEdges.push(toEdge.id);
             path[i].edges.forEach((edge)=>{
-                if(edge.id !== fromEdge.id && edge.id !== toEdge.id){
+                if(dynamicEdges.indexOf(edge.id) === -1){
+                    return;
+                }
+                if(edge.id === fromEdge.id || edge.id === toEdge.id){
+                    usedDynamicEdges.push(edge.id);
+                }else{
                     unusedDynamicEdges.push(edge.id);
                 }
                dynamicEdges.splice(dynamicEdges.indexOf(edge.id), 1);
