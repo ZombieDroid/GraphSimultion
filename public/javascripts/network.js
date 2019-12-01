@@ -7,7 +7,7 @@ class Demand {
 }
 
 var demands = [];
-
+var selectedDemand;
 // create an array with nodes
 var nodes = new vis.DataSet([
     {id: 0, label: 'v0', color:'#4F7BCD'},
@@ -163,10 +163,12 @@ function next(){
 function runDemandFirst (demand) {
     let graph = setUpGraph();
 
-    //dijkstra();
     let walkedEdges = [];
     let fromNode = graph.find(value => value.label === demand.from);
     let targetNode = graph.find(value => value.label === demand.to);
+
+    selectedDemand = document.getElementById('d-'+actualDemand);
+    selectedDemand.style = 'border: 1px solid; width: 80px;background:grey';
 
     let path = dijkstra(graph, fromNode, targetNode);
     updateEdges(path);
@@ -233,6 +235,8 @@ function refreshGraphColor(walkedEdges) {
             edge.width = '1';
             edges.update(edge);
     });
+    selectedDemand.style = 'border: 1px solid; width: 80px;background:indianred';
+
 }
 
 function dijkstra(graph, source, target) {
@@ -306,6 +310,7 @@ function showAndCollectDemands() {
 
     for (var i = 0; i < demands.length; ++i) {
         var cell = document.createElement('td');
+        cell.id = 'd-' + i;
         cell.style = 'border: 1px solid; width: 80px;';
         cell.appendChild(document.createTextNode(demands[i].demandValue + ': ' + demands[i].from + ' -> ' + demands[i].to));
         roww.appendChild(cell);
@@ -356,7 +361,6 @@ function createTable() {
     document.getElementById('parent').appendChild(table);
     document.getElementById('parent').appendChild(clearDiv);
 }
-
 
 /*
 var nodeA = new Node("A");

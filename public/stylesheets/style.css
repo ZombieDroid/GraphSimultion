@@ -22,3 +22,11 @@ a {
 .clear{
     clear:both;
 }
+
+.selected-demand {
+    background:grey;
+}
+
+.finised-demand{
+    bacground:indianred;
+}
