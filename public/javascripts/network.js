@@ -130,7 +130,7 @@ function setUpGraph(){
 }
 
 function isDone(){
-    return dynamicEdges.length === 0 || demands.length === 0 || demands.length === actualDemand;
+    return dynamicEdges.length === 0 || demands.length === actualDemand;
 }
 
 function collectDynamicEdges(){
@@ -196,7 +196,7 @@ function updateEdges(path){
             usedDynamicEdges.push(fromEdge.id);
             usedDynamicEdges.push(toEdge.id);
             path[i].edges.forEach((edge)=>{
-               dynamicEdges.splice(edge.id, 1);
+               dynamicEdges.splice(dynamicEdges.indexOf(edge.id), 1);
             });
         }
     }
