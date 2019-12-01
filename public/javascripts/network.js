@@ -190,7 +190,7 @@ function runDemandFirst (demand) {
         let fromEdge = path[1].getEdge(path[0]);
         walkedEdges.push(fromEdge.id);
     }
-    walkedEdges.sort();
+    //walkedEdges.sort();
     colorGraphForDijkstra(walkedEdges);
 }
 
