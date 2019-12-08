@@ -9,6 +9,7 @@ class Demand {
 let demands = [];
 let selectedDemand;
 let walkedEdges = [];
+let demandFromForm =[];
 // create an array with nodes
 var nodes = new vis.DataSet([
     {id: 0, label: 'v0', color:'#4F7BCD'},
@@ -78,6 +79,7 @@ demandMatrix = [
     [null, null, 12, null, null, null, null, '-', null, 5],
     [null, null, null, null, null, null, null, null, '-', null],
     [null, null, null, null, null, null, null, null, null, '-']];
+
 var actualDemand = 0;
 var started = false;
 var container = document.getElementById('mynetwork');
@@ -310,15 +312,19 @@ function showAndCollectDemands() {
     var createTableButton = document.getElementById('collect-demand');
     createTableButton.disabled=true;
 
+    let startButton = document.getElementById('coreButton');
+    startButton.disabled=false;
+
+
     var table = document.createElement('table');
     var tableBody = document.createElement('tbody');
     var roww = document.createElement('tr');
 
     let row = 0;
-    demandMatrix.forEach(function (rowData) {
+    demandFromForm.forEach(function (rowData) {
         let col = 0;
         rowData.forEach(function (cellData) {
-            if (null !== cellData && '-' !== cellData)
+            if (null !== cellData && '' !== cellData)
                 demands.push(new Demand(row, col, cellData));
             ++col;
         });
@@ -345,6 +351,9 @@ function showAndCollectDemands() {
 function createTable() {
     var createTableButton = document.getElementById('table-demand');
     createTableButton.disabled=true;
+    var createTableButton = document.getElementById('collect-demand');
+    createTableButton.disabled=false;
+
     var table = document.createElement('table');
     table.style = 'border: 1px solid';
     table.className = 'column';
@@ -363,7 +372,7 @@ function createTable() {
 
     tableBody.appendChild(thead);
     let counter = 0;
-    demandMatrix.forEach(function (rowData) {
+    demandFromForm.forEach(function (rowData) {
         var row = document.createElement('tr');
         var cell1 = document.createElement('td');
         cell1.style = 'border: 1px solid; width: 30px;';
@@ -371,7 +380,11 @@ function createTable() {
         row.appendChild(cell1);
         rowData.forEach(function (cellData) {
             var cell = document.createElement('td');
-            cell.style = 'border: 1px solid; width: 30px;';
+            if(!cellData)
+                cell.style = 'border: 1px solid; width: 30px; background:gray;';
+            else
+                cell.style = 'border: 1px solid; width: 30px;';
+
             cell.appendChild(document.createTextNode((null === cellData) ? '' : cellData));
             row.appendChild(cell);
         });
@@ -381,6 +394,23 @@ function createTable() {
     table.appendChild(tableBody);
     document.getElementById('parent').appendChild(table);
     document.getElementById('parent').appendChild(clearDiv);
+}
+
+function readDemandFromForm(){
+var createTableButton = document.getElementById('table-demand');
+createTableButton.disabled=false;
+
+var createTableButton = document.getElementById('read-demand');
+createTableButton.disabled=true;
+
+let myArr = document.querySelectorAll('input[name^="field"]');
+let valuesArray = [];
+
+myArr.forEach((data) =>{valuesArray.push(data.value)});
+console.log(valuesArray);
+for(let i = 0; i<10;++i){
+    demandFromForm.push(valuesArray.slice(0+i*10,10+(i*10)));
+}
 }
 
 /*
